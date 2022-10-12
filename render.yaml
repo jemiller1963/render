@@ -1,18 +1,18 @@
 databases:
-  - name: render
-    databaseName: render
-    user: render
+  - name: postgres
+    ipAllowList: []
 
 services:
   - type: web
-    name: render
+    name: rails
+    plan: free
     env: ruby
     buildCommand: "./bin/render-build.sh"
-    startCommand: "bundle exec puma -C config/puma.rb"
+    startCommand: bundle exec rails s
     envVars:
-      - key: DATABASE_URL
-        fromDatabase:
-          name: render
-          property: connectionString
       - key: RAILS_MASTER_KEY
         sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: postgres
+          property: connectionString
